@@ -6,3 +6,4 @@ select
         else 'Scalene'
     end
 from triangles
+
