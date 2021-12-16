@@ -1,0 +1,4 @@
+문법 : 
+Insert Into [Table] Values [Values]; -> 컬럼 순서대로 입력
+Ex) insert into salary (id, salary) values ('2', '550');
+

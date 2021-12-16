@@ -1,0 +1,28 @@
+select daily_stats.week, avg(daily_stats.incidents_daily)
+from(select week, date, count(incident_id) as incidents_daily
+from crimes
+group by week, date) daily_stats
+group by daily_stats.week
+
+-> from clauses subquery
+
+select *
+from crimes
+where date = (select min(date) from cimres)
+
+select *
+from crimes
+where date in (select date from crimes order by date desc limit 5)
+
+-> where clauses subquery
+
+https://leetcode.com/problems/delete-duplicate-emails/
+<196. Delete Duplicate Emails>
+delete from person
+where id not in(
+select sub.min_id
+from(
+select email, min(id) as min_id
+from person
+group by email
+) sub)

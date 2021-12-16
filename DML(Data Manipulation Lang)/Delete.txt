@@ -1,0 +1,6 @@
+문법:
+Delete From [Table];
+Delete From [Table] Where [Conditions];
+
+https://leetcode.com/problems/delete-duplicate-emails/
+<Delete Duplicate Emails>

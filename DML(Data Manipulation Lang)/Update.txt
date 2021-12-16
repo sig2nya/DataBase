@@ -1,0 +1,16 @@
+문법 : 
+Update [Table] Set [Column = values];
+Ex) Update salary Set salary = salary + 100;
+
+Update [Table] Set [Column = values] Where [Conditions];
+Ex) Update salary Set Salary = Salary + 100 Where Id = 2;
+
+https://leetcode.com/problems/swap-salary/submissions/
+<Swap-Salary>
+update salary
+set sex = case
+            when sex = 'm' then 'f' // case문 이용할 때, then clause에서 속성명 쓰지 않는다.
+            else 'm'
+        end
+
+        
