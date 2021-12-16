@@ -8,11 +8,11 @@ from customers
 limit 10; // 레코드의 갯수 제한도 가능하다.
 
 1. Select All : https://www.hackerrank.com/challenges/select-all-sql/problem?h_r=internal-search
-sol)
+sql>
 select *
 from city
 
 2. Weather Observation station1 : https://www.hackerrank.com/challenges/weather-observation-station-1/problem?h_r=internal-search
-sol)
+sql>
 select city, state
 from station

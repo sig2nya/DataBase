@@ -45,3 +45,62 @@ where customerid between 3 and 5
 // where customerid >= 3 and customerid <= 5와 결과 값이 같다.
 
 ** SQL에서 Escape Character 또한 '\'를 이용한다.
+
+-------- Problem Solving --------
+1. Revising the Select Query 1 : https://www.hackerrank.com/challenges/revising-the-select-query/problem?h_r=internal-search
+sql>
+select *
+from city
+where countrycode = 'USA' and population > 100000
+
+2. Select By ID : https://www.hackerrank.com/challenges/select-by-id/problem?h_r=internal-search
+sql>
+select *
+from city
+where id = 1661
+
+3. Weather Observation Station 6 : https://www.hackerrank.com/challenges/weather-observation-station-6/problem?h_r=internal-search
+Issues : 
+1) select city
+from station
+where city like 'A%' or 'E%' or 'I%' or 'O%' or 'U%' // 'A'로 시작하는 문자만 검색된다...
+
+2) select city
+from station
+where city like 'A%'
+where city like 'E%'
+where city like 'I%'
+where city like 'O%'
+where city like 'U%' // 이렇게 쓰면 Error 발생. where절은 하나만 쓸수 있다?
+
+3) select city
+from station
+where city in ('A%') // 이 것도 안된다.
+
+sql>
+select city
+from station
+where city like 'A%' 
+   or city like 'E%'
+   or city like 'I%'
+   or city like 'O%'
+   or city like 'U%' // where [속성명] like 'A%'에서 많은 like 연산자를 이용하기 위한 방법
+        
+
+4. Weather Observation Station 12 : https://www.hackerrank.com/challenges/weather-observation-station-12/problem?h_r=internal-search
+sql>
+select distinct city
+from station
+where city not like 'a%' 
+   and city not like 'e%'
+   and city not like 'i%'
+   and city not like 'o%'
+   and city not like 'u%'
+   and city not like '%a'
+   and city not like '%e'
+   and city not like '%i'
+   and city not like '%o'
+   and city not like '%u'
+
+* distinct를 select문 앞에 작성하여 중복을 제거할 수 있다.
+   
