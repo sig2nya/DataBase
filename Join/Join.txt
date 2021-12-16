@@ -1,0 +1,38 @@
+Users, Orders Table
+ -> select * from users, orders(Cartition product)
+ -> select * from users, orders where users.id = orders.userid : 구식 방법
+ -> select * from users inner join orders on users.id = orders.userid : 조인을 통한 방법, 위 코드와 아래 코드는 결과가 같다.
+ 
+  * sql-joins.leopard.in.ua 홈페이지를 참고해보자.
+
+<Inner Join>
+select *
+from orders
+	inner join customers on orders.customerid(왼쪽) = customers.customerid(오른쪽)
+
+<Left Join> : 왼쪽(테이블)에는 데이터가 존재하나, 오른쪽(테이블)에는 데이터가 존재하지 않을 때 이용. 데이터가 존재하지 않을 시, null 값으로 출력된다.
+select *
+from customers
+	left join orders on customers.customerid = orders.customerid
+
+<HackerRank>
+ : African Cities(https://www.hackerrank.com/challenges/african-cities/problem?h_r=internal-search)
+sol)
+select city.name
+from city
+    inner join country on city.countrycode = country.code
+where country.continent = 'africa'
+
+ : Population Census(https://www.hackerrank.com/challenges/asian-population/problem?h_r=internal-search)
+ sol)
+select sum(city.population)
+from city
+inner join country on city.countrycode = country.code
+where country.continent = 'asia'
+
+ : Average Population of Each Continent(https://www.hackerrank.com/challenges/average-population-of-each-continent/problem?h_r=internal-search)
+ sol)
+select continent, floor(avg(city.population))
+from country
+    inner join city on city.countrycode = country.code
+    group by continent
