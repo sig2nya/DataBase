@@ -1,5 +1,0 @@
-select *
-from customers as c
-	inner join orders as o on c.customerid = o.customerid
-order by c.customerid
-
