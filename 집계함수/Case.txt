@@ -1,0 +1,51 @@
+Case 문 : 조건절. 일반 Case문 사용과 비슷하며, 항상 End로 끝마쳐야 한다.  
+Ex)
+select case
+		when categoryid = 1 and supplierid = 1 then '음료' // and 절도 (당연히)사용 가능하다.
+		when categoryid = 2 then '조미료'
+		else '기타' // else도 또한 사용 가능하다.
+		end as '카테고리' // end 이후에 as문을 사용한다.
+from products
+
+* SQL로 피봇팅 하는 방법
+Ex)
+select case when categoryid = 1 then price else 'null' end as category1_price,
+	   case when categoryid = 2 then price else 'null' end as category2_price
+	   ... // 이런식으로 추가해주면 categoryid 별로 데이터 추출이 가능하다.
+from products
+
+-------- Problem Solving --------
+1. Type of Triangle : https://www.hackerrank.com/challenges/what-type-of-triangle/problem?h_r=internal-search
+Issues : 
+1)
+select *, case when a = b and b = c then 'Equilateral'
+            when a = b and b <> c or a = c and a <> b or b = c and b <> a then 'Isosceles'
+            when a + b < c or b + c < a or a + c < b then 'Not A Triangle'
+            else 'Scalene'
+       end
+from triangles // 왜 틀린지 모르겠다...
+sql>
+select case when a = b and b = c then 'Equilateral'
+            when a + b <= c or b + c <= a or a + c <= b then 'Not A Triangle' // 이 조건을 먼저 검사해야 했다.
+            when (a = b and b <> c) or (a = c and a <> b) or (b = c and b <> a) then 'Isosceles'
+            else 'Scalene'
+       end
+from triangles
+
+2. <LeetCode> 1179. Reformat Department Table : https://leetcode.com/problems/reformat-department-table/
+sql>
+select id, 
+       sum(case when month = 'jan' then revenue else null end) as 'Jan_Revenue',
+       sum(case when month = 'feb' then revenue else null end) as 'Feb_Revenue',
+       sum(case when month = 'mar' then revenue else null end) as 'Mar_Revenue',
+       sum(case when month = 'apr' then revenue else null end) as 'Apr_Revenue',
+       sum(case when month = 'may' then revenue else null end) as 'May_Revenue',
+       sum(case when month = 'jun' then revenue else null end) as 'Jun_Revenue',
+       sum(case when month = 'jul' then revenue else null end) as 'Jul_Revenue',
+       sum(case when month = 'aug' then revenue else null end) as 'Aug_Revenue',
+       sum(case when month = 'sep' then revenue else null end) as 'Sep_Revenue',
+       sum(case when month = 'oct' then revenue else null end) as 'Oct_Revenue',
+       sum(case when month = 'nov' then revenue else null end) as 'Nov_Revenue',
+       sum(case when month = 'dec' then revenue else null end) as 'Dec_Revenue'
+from department
+group by id // sum을 왜 해줘야 하는지 모르겠다...

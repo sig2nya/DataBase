@@ -1,0 +1,72 @@
+Group by 절 : 속성명으로 그룹화하여 항목별로 데이터 확인 가능 
+Ex)
+select SupplierId, avg(price)
+from products
+group by supplierid, categoryid // group by 이후에 숫자로 그룹핑(select 순서)을 할 수도 있다. 하지만, 추천하진 않는다.
+order by avg(price) 
+
+Ex)
+select SupplierId, avg(price)
+from products
+where avg(price) >= 100 // 이렇게 하면 전체 테이블에서 평균가가 100 이상인 데이터들을 그룹화 해준다.(그룹화 전에 평균값을 구하고 그룹화 한다.)
+group by supplierid, categoryid
+order by avg(price)
+
+Ex)
+select SupplierId, avg(price)
+from products
+group by supplierid, categoryid
+having avg(price) >= 100 // 그룹화 후에 100 이상인 평균가를 구한다.
+order by avg(price)
+
+-------- Problem Solving --------
+1. Revising Aggregations - Average : https://www.hackerrank.com/challenges/revising-aggregations-the-average-function/problem?h_r=internal-search
+sql>
+select avg(population)
+from city
+where district = 'California'
+
+2. Revising Aggregations - The Sum Function : https://www.hackerrank.com/challenges/revising-aggregations-sum/problem?h_r=internal-search
+sql>
+select sum(population)
+from city
+where district = 'California'
+
+3. Revising Aggregations - The Count Function : https://www.hackerrank.com/challenges/revising-aggregations-the-count-function/problem?h_r=internal-search
+sql>
+select count(name)
+from city
+where population > 100000
+
+4. Average Population : https://www.hackerrank.com/challenges/average-population/problem?h_r=internal-search
+sql>
+select floor(avg(population))
+from city
+
+5. Population Density Difference : https://www.hackerrank.com/challenges/population-density-difference/problem?h_r=internal-search
+sql>
+select max(population) - min(population)
+from city
+
+6. Weather Observation Station 4 : https://www.hackerrank.com/challenges/weather-observation-station-4/problem?h_r=internal-search
+Issues :
+1)
+select count(city) - distinct count(city) // 불가능
+from station
+
+sql>
+select count(city) - count(distinct city) // 쿼리를 차근차근 사용해보자.
+from station
+
+7. Top Earners : https://www.hackerrank.com/challenges/earnings-of-employees/problem?h_r=internal-search
+Issues :
+1)
+select months * salary as earnings, count(name)
+from employee
+group by earnings // 이 쿼리문을 실행하면, earnings로 그룹 후에 각 수입에 대한 인원 수가 나온다
+sql>
+select months * salary as earnings, count(name)
+from employee
+group by earnings
+order by earnings desc 
+limit 1 // 굳이 max함수를 사용하지 않아도 됐다.
