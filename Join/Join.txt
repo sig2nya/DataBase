@@ -35,6 +35,8 @@ Ex)
   from customers
 	left join orders on customers.customerid = orders.customerid
     where orderid is null // 테이블을 조인하여 null 값도 같이 출력해준다.
+    
+ 3) Self Join : Self Table을 조인할 때 이용한다.
 
 -------- Problem Solving --------
 1. African Cities : https://www.hackerrank.com/challenges/african-cities/problem?h_r=internal-search
@@ -64,3 +66,19 @@ sql>
  from customers
     left join orders on customers.id = orders.customerid
     where orders.id is null
+ 5. <LeetCode> 181. Employees Earning More Than Their Managers : https://leetcode.com/problems/employees-earning-more-than-their-managers/
+ sql>
+ select employee.name as 'Employee'
+ from employee 
+    inner join employee as ref on employee.managerid = ref.id
+    where employee.salary > ref.salary
+ 	
+ 6. <LeetCode> 197. Rising Temperature : https://leetcode.com/problems/rising-temperature/
+ sql>
+ select today.id
+ from weather as today
+    inner join weather as yesterday on date_add(yesterday.recorddate, interval 1 day) = today.recorddate
+    where today.temperature > yesterday.temperature
+
+ * date_add(날짜, interval [value] [unit of time])
+ * date_sub(날짜, interval [value] [unit of time]) // SQL이 지원하는 다양한 함수를 공부해보자!

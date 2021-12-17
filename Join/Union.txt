@@ -1,0 +1,21 @@
+Union 연산 : 중복을 없애고(Distinct) 테이블을 하나로 합친다. ALL option을 이용하면, 중복값을 포함하여 테이블을 하나로 합친다.
+Ex)
+-- product 테이블에서 price가 5 이하 또는 200 이상인 상품들만 출력하세요
+Ex)
+select *
+from products
+where price <= 5
+	  or price >= 200
+Ex)
+select *
+from products
+where price <= 5
+UNION // 위 예제와 같은 결과를 출력하는 코드이다. Union을 활용.
+select *
+from products
+where price >= 200
+
+
+-------- Problem Solving --------
+1. Symmetric Pairs : https://www.hackerrank.com/challenges/symmetric-pairs/problem?h_r=internal-search
+sql>
