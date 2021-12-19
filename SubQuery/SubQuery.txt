@@ -1,0 +1,42 @@
+SubQuery : 가상의 테이블을 하나 더 만들어서 질의한다.
+Ex)
+select daily_stats.week, avg(daily_stats.incidents_daily)
+from (
+	select week, date, count(incident_id) as incidents_daily
+	from crimes
+	group by week, date
+	) daily_stats
+group by daily_stats.week
+
+Ex)
+select *
+from crimes
+where date = (select min(date) from crimes) // 서브쿼리의 결과물이 1개여야만 한다.
+
+Ex)
+select *
+from crimes
+where date in (select date from crimes order by date desc limit 5)
+
+
+-------- Problem Solving --------
+1. Top Earners : https://www.hackerrank.com/challenges/earnings-of-employees/problem?h_r=internal-search
+sql>
+select distinct salary * months as earnings, count(*)
+from employee
+where salary * months = (select max(salary * months) from employee)
+group by earnings
+
+2. <LeetCode> 184. Department Highest Salary : https://leetcode.com/problems/department-highest-salary/
+sql>
+select d.name as department, e.name as employee, e.salary
+from employee as e
+    inner join (
+        select departmentid, max(salary) as max_salary
+        from employee
+        group by departmentid
+    ) as dh on e.departmentid = dh.departmentid
+    and e.salary = dh.max_salary
+    inner join department as d on d.id = e.departmentid
+
+3. Challenges : https://www.hackerrank.com/challenges/challenges/problem?h_r=internal-search
