@@ -1,0 +1,67 @@
+윈도우 함수 : Group By와 비슷하다. 하지만, 다르다.
+
+모양새
+ - 함수 [컬럼] over (partition by 컬럼 order by 컬럼) // partition by는 group by와 기능이 같다
+ - max [컬럼] over (partition by 컬럼)
+ ex) select max(salary) over (partition by departmentid) as maxsalary from employee
+ 
+ - sum [컬럼] over (order by [컬럼])
+ ex) select sum(kg) over(order by line) as cumsum from elevator
+ 
+ - sum [컬럼] over (order by [컬럼] partition by [컬럼])
+ ex) select sum(kg) over (order by line partition by id) as cumsum from elevator
+ 
+ - select val // 순위를 지정해주는 함수들, 세가지의 함수들이 순위를 메기는 방법이 다르다.
+ 	,row_number() over (order by val) as 'row_number'
+ 	, rank() over (order by val) as 'rank'
+ 	, dense_rank() over (order by val) as ' dense_rank'
+ 	from sample
+
+ - select id // 데이터의 위치를 바꾸어준다.
+ 	, recorddate
+ 	, temperature
+ 	, lag(temperature) over (order by recorddate) as 'lag'
+ 	, lead(temperature) over (order by recorddate) as 'lead'
+ 	from sample
+ 	
+-------- Problem Solving --------
+1. 180. <LeetCode> Consecutive Numbers : https://leetcode.com/problems/consecutive-numbers/
+sql>
+select distinct l.num as ConsecutiveNums
+from (
+select num
+    , lead(num, 1) over (order by id) as next
+    , lead(num, 2) over (order by id) as afternext
+from logs
+) l
+where l.num = l.next and l.num = l.afternext
+
+2. <LeetCode> 184. Department Highest Salary : https://leetcode.com/problems/department-highest-salary/
+sql>
+select ms.department
+    , ms.name as employee
+    , ms.salary
+from(
+select employee.name
+    , employee.salary
+    , department.name as department
+    , max(salary) over (partition by departmentid) max_salary
+    from employee
+        inner join department on employee.departmentid = department.id
+    ) ms
+where ms.salary = ms.max_salary
+
+3. <LeetCode> 185. Department Top Three Salaries : https://leetcode.com/problems/department-top-three-salaries/
+sql>
+select t.department
+    , t.employee
+    , t.salary
+from(
+select department.name as department
+    , employee.name as employee
+    , employee.salary
+    , dense_rank() over (partition by departmentid order by salary desc) as dr
+from employee
+    inner join department on employee.departmentid = department.id
+    ) t
+where t.dr <= 3

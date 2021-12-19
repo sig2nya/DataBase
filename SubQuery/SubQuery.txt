@@ -40,3 +40,59 @@ from employee as e
     inner join department as d on d.id = e.departmentid
 
 3. Challenges : https://www.hackerrank.com/challenges/challenges/problem?h_r=internal-search
+sql>
+select hackers.hacker_id, hackers.name, count(*) challenges_created
+from challenges
+    inner join hackers on challenges.hacker_id = hackers.hacker_id
+group by hackers.hacker_id, hackers.name
+having challenges_created = (select max(challenges_created) 
+                             from (
+                                 select hacker_id, 
+                                 count(*) as challenges_created
+                                 from challenges 
+                                 group by hacker_id
+                             ) sub)
+                             or challenges_created in(
+                                select challenges_created
+                             from(select hacker_id
+                                 , count(*) as challenges_created
+                                  from challenges
+                                  group by hacker_id
+                                 ) sub
+                                 group by challenges_created
+                                 having count(*) = 1)
+order by challenges_created desc, hacker_id
+
+ * with를 이용하면 서브쿼리를 하나의 테이블로써 정의가 가능하다
+ Ex) with counter as(
+ 	select hackers.hacker_id, hackers.name, count(*) as challenges_created
+ 	from challenges
+ 		inner join hackers on challenges.hacker_id = hackers.hacker_id
+ 		group by hackers.hacker_id, hackers.name
+ )
+ 
+ select counter.hacker_id, counter.name, counter.challenges_created
+ from counter
+ where challenges_created = (select max(challenges_created) from counter)
+  or challenges_created in(select challenges_created
+                         from counter
+                          group by challenges_created
+                          having count(*) = 1
+                         )
+ order by counter.challenges_created desc, counter.hacker_id
+ 
+4. The Report : https://www.hackerrank.com/challenges/the-report/problem?h_r=internal-search
+sql>
+select case when g.grade < 8 then null else s.name end as name, g.grade, s.marks
+from students as s
+    inner join grades as g on s.marks between g.min_mark and g.max_mark
+order by g.grade desc, name, s.marks
+ 
+5. <LeetCode> 180. Consecutive Numbers : https://leetcode.com/problems/consecutive-numbers/
+sql>
+select l.id as ConsecutiveNums
+from logs as l
+    inner join logs as l_next on l.id + 1 = l_next.id
+    inner join logs as l_next2 on l.id + 2 = l_next2.id
+where l.num = l_next.num and l.num = l_next2.num
+

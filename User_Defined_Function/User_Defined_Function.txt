@@ -1,0 +1,94 @@
+사용자 정의 함수 : 사용자 필요에 의하여 정하는 함수
+
+create function [name]([parameter name], [datatype])
+	returns [datatype]
+begin
+	declare [variable name] [datatype]; // declare와 set 뒤쪽에는 세미콜론을 이용하자
+	set ;
+	return [query] / [variable name];
+end
+
+Ex)
+create function add(x, y)
+	returns int
+
+Ex)
+create function customerlevel(credit decimal(10, 2))
+returns varchar(20) deterministic
+begin
+	declare level varchar(20);
+	if credit > 50000 then
+		set level = 'platinum';
+	elseif(credit <= 50000 and credit >= 10000) then
+		set level = 'gold';
+	elseif credit < 10000 then
+		set level = 'silver';
+	end if
+	return (level);
+end
+
+사용 방법 ->
+select customername,
+	customerlevel(creditlimit)
+from
+	customers
+order by
+	customername; 
+
+ * 사용법 : select [function name]([parameter])
+ 	
+-------- Problem Solving --------
+1. 177. <LeetCode> Nth Highest Salary : https://leetcode.com/problems/nth-highest-salary/
+sql>
+CREATE FUNCTION getNthHighestSalary(N INT)
+RETURNS INT
+BEGIN
+  RETURN (
+    select case 
+         when count(sub.salary) < n then null
+         else min(sub.salary)
+         end
+    from(
+        select distinct salary
+        from employee
+        order by salary desc
+        limit n
+    ) sub
+  );
+END
+
+If를 이용하여 풀이 sql>
+* mysql if Function : if(condition, value_if_true, value_if_false)
+CREATE FUNCTION getNthHighestSalary(N INT)
+RETURNS INT
+BEGIN
+  RETURN (
+    select if(count(sub.salary) < n, null, min(sub.salary))
+    from(
+        select distinct salary
+        from employee
+        order by salary desc
+        limit n
+    ) sub
+  );
+END
+
+ * limit 심화 :
+  - select * from table limit 5, 10 // retrieve rows 6~15
+  - select * from table limit 5, 1 // retrieve row 6
+  - select * from table limit n, 1 // retrieve rows n+1
+    = select * from table limit 1 offset n
+
+    
+ sql>
+CREATE FUNCTION getNthHighestSalary(N INT)
+RETURNS INT
+BEGIN
+    set n = n - 1;
+  RETURN (
+       select distinct salary
+        from employee
+        order by salary desc
+        limit n, 1
+  );
+END
